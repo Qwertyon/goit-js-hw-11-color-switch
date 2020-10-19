@@ -7,9 +7,12 @@ const colors = [
   '#795548',
 ];
 
+let timerId;
+
 const bodyRef = document.querySelector('body');
 const btnStartRef = document.querySelector('.btn-start-js');
 const btnStopRef = document.querySelector('.btn-stop-js');
+
 
 const randomIntegerFromInterval = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -20,33 +23,29 @@ const randomColorsIndex = () => {
 };
 
 const themeEnable = () => {
-  bodyRef.setAttribute(
-    'style',
-    `background-color:${colors[randomColorsIndex()]}`,
-  );
-  console.log(bodyRef.getAttribute('style'));
+  bodyRef.style.backgroundColor = colors[randomColorsIndex()]
 };
 
-let timerId;
-
-function intervalSwitcher() {
+const intervalSwitcher = () => {
   timerId = setInterval(themeEnable, 1000);
 }
 
-function closeIntervalswitcher() {
+const closeIntervalswitcher = () => {
   clearTimeout(timerId);
+}
+
+const beginSwitch = () => {
+  intervalSwitcher();
+  btnStartRef.setAttribute('disabled', 'true');
+}
+
+const stopSwitch = () => {
+  clearTimeout(timerId);
+  btnStartRef.removeAttribute('disabled');
 }
 
 btnStartRef.addEventListener('click', beginSwitch);
 
 btnStopRef.addEventListener('click', stopSwitch);
 
-function beginSwitch(event) {
-  intervalSwitcher();
-  btnStartRef.setAttribute('disabled', 'true');
-}
 
-function stopSwitch(event) {
-  clearTimeout(timerId);
-  btnStartRef.removeAttribute('disabled');
-}
